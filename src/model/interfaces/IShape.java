@@ -1,6 +1,7 @@
 package model.interfaces;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import model.ShapeShadingType;
 import model.ShapeType;
@@ -24,4 +25,6 @@ public interface IShape {
 	public boolean checkCollision(Point selectedStart, Point selectedEnd);
 	public void moveCoodinates(int x, int y);
 	public void removeCoodinates(int x, int y);
+	public  ArrayList<IShape>  getShapes();
+	boolean isGroup();
 }

@@ -37,9 +37,10 @@ public class MoveShapeCommand implements ICommand, IUndoable{
         //System.out.println("In moving: " + shapeList.getSelectedList().toString());
         for(IShape shape: shapeList.getSelectedList()) {
         	//System.out.println("Attempting to move.. " + shape.toString());
-            shapeList.remove(shape);
-            shape.moveCoodinates(deltaX, deltaY);
-			shapeList.add(shape);
+
+        	shapeList.remove(shape);
+        	shape.moveCoodinates(deltaX, deltaY);
+        	shapeList.add(shape);
         }
         CommandHistory.add(this);
     }

@@ -35,11 +35,11 @@ public class SelectShapeCommand implements ICommand{
 		{
 			if(shape.checkCollision(startPoint, endPoint))
 			{
-				//System.out.println("Selected Shape");
+		
 				shapeList.addSelected(shape);
-				//System.out.println(shapeList.getSelectedList().toString());
 			}
+				//System.out.println(shapeList.getSelectedList().toString());
 		}
-		//CommandHistory.add(this);
 	}
+	
 }

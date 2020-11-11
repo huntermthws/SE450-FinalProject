@@ -8,11 +8,35 @@ import mouseListener.Point;
 
 public class ShapeGroup implements IShape{
 
-	private ArrayList<IShape> groupedShapes = new ArrayList<>();
+	public ArrayList<IShape> groupedShapes;
+	public int maxX, minX = -1, minY = -1, maxY, width, height;
 	
 	public ShapeGroup(ArrayList<IShape> selectedShapes)
 	{
 		this.groupedShapes = selectedShapes;
+		
+		for(IShape shape : selectedShapes)
+		{
+			if(shape.getMinX() < minX || minX == -1)
+			{
+				minX = shape.getMinX();
+			}
+			if(shape.getMinY() < minY || minY == -1)
+			{
+				minY = shape.getMinY();
+			}
+			if(shape.getMaxX() > maxX)
+			{
+				maxX = shape.getMaxX();
+			}
+			if(shape.getMaxY() > maxY)
+			{
+				maxY = shape.getMaxY();
+			}
+		}
+		
+		width = maxX - minX;
+        height = maxY - minY;
 	}
 	@Override
 	public Point getStart() {
@@ -51,55 +75,27 @@ public class ShapeGroup implements IShape{
 	}
 
 	@Override
-	public int getMaxX() {
-		int maxX = 0;
-		for(IShape shape : groupedShapes)
-		{
-			maxX = shape.getMaxX();
-		}
-		return maxX;
-	}
+	public int getMaxX() {return maxX;}
 
 	@Override
-	public int getMinX() {
-		int minX = 0;
-		for(IShape shape : groupedShapes)
-		{
-			minX = shape.getMinX();
-		}
-		return minX;
-	}
+	public int getMinX() {return minX;}
 
 	@Override
-	public int getMaxY() {
-		int maxY = 0;
-		for(IShape shape : groupedShapes)
-		{
-			maxY = shape.getMaxY();
-		}
-		return maxY;
-	}
+	public int getMaxY() {return maxY;}
 
 	@Override
-	public int getMinY() {
-		int minY = 0;
-		for(IShape shape : groupedShapes)
-		{
-			minY = shape.getMinX();
-		}
-		return minY;
-	}
+	public int getMinY() {return minY;}
 
 	@Override
 	public int getHeight() {
 		// TODO Auto-generated method stub
-		return 0;
+		return height;
 	}
 
 	@Override
 	public int getWidth() {
 		// TODO Auto-generated method stub
-		return 0;
+		return width;
 	}
 
 	@Override
@@ -116,20 +112,51 @@ public class ShapeGroup implements IShape{
 
 	@Override
 	public boolean checkCollision(Point selectedStart, Point selectedEnd) {
-		// TODO Auto-generated method stub
-		return false;
+		int selectMinX = Math.min(selectedStart.getX(), selectedEnd.getX());
+		int selectMaxX = Math.max(selectedStart.getX(), selectedEnd.getX());
+		int selectMinY = Math.min(selectedStart.getY(), selectedEnd.getY());
+		int selectMaxY = Math.max(selectedStart.getY(), selectedEnd.getY());
+        
+		int selectedWidth = selectMaxX - selectMinX;
+        int selectedHeight = selectMaxY - selectMinY;
+        
+        if(minX < selectMinX + selectedWidth && 
+        		minX + width > selectMinX && 
+        		minY < selectMinY + selectedHeight && 
+        		minY + height > selectMinY)
+        {
+        	return true;
+        }
+        else
+        {
+        	return false;
+        }
 	}
 
 	@Override
 	public void moveCoodinates(int x, int y) {
 		// TODO Auto-generated method stub
-		
+		minX += x;
+		minY += y;
+		maxX += x;
+		maxY += y;
+		for(IShape shape: groupedShapes)
+		{
+			shape.moveCoodinates(x, y);
+		}
 	}
 
 	@Override
 	public void removeCoodinates(int x, int y) {
 		// TODO Auto-generated method stub
-		
+		minX -= x;
+		minY -= y;
+		maxX -= x;
+		maxY -= y;
+		for(IShape shape: groupedShapes)
+		{
+			shape.removeCoodinates(x, y);
+		}
 	}
 	
 	public void add(IShape shape)
@@ -137,9 +164,16 @@ public class ShapeGroup implements IShape{
 		groupedShapes.add(shape);
 	}
 	
+	@Override
 	public ArrayList<IShape> getShapes()
 	{
 		return groupedShapes;
+	}
+	
+	@Override
+	public boolean isGroup() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

@@ -20,7 +20,17 @@ public class DeleteShapeCommand implements ICommand, IUndoable{
 	public void run() {
 		// TODO Auto-generated method stub
 		for (IShape shape : shapeList.getSelectedList()) {
-			shapeList.remove(shape);
+			/*if(shape.isGroup())
+			{
+				for (IShape s : shape.getShapes())
+				{
+					shapeList.remove(s);
+				}
+			}
+			else 
+			{*/
+				shapeList.remove(shape);
+			//}
 		}
 		CommandHistory.add(this);
 	}

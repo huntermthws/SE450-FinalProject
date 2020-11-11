@@ -5,6 +5,7 @@ import commands.DeleteShapeCommand;
 import commands.GroupShapeCommand;
 import commands.PasteShapeCommand;
 import commands.RedoCommand;
+import commands.UnGroupShapeCommand;
 import commands.UndoCommand;
 import model.ShapeList;
 import model.interfaces.IApplicationState;
@@ -40,5 +41,6 @@ public class JPaintController implements IJPaintController {
         uiModule.addEvent(EventName.PASTE, () -> new PasteShapeCommand(shapeList, (ApplicationState)applicationState).run());
         uiModule.addEvent(EventName.DELETE, () -> new DeleteShapeCommand(shapeList).run());
         uiModule.addEvent(EventName.GROUP, () -> new GroupShapeCommand(shapeList).run());
+        uiModule.addEvent(EventName.UNGROUP, () -> new UnGroupShapeCommand(shapeList).run());
     }
 }

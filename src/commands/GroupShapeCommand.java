@@ -1,5 +1,7 @@
 package commands;
 
+import java.util.ArrayList;
+
 import model.ShapeGroup;
 import model.ShapeList;
 import model.interfaces.IShape;
@@ -7,6 +9,7 @@ import model.interfaces.IUndoable;
 
 public class GroupShapeCommand implements ICommand, IUndoable{
 	ShapeList shapeList;
+	private IShape groupedShape;
 
 	public GroupShapeCommand(ShapeList shapeList)
 	{
@@ -15,25 +18,39 @@ public class GroupShapeCommand implements ICommand, IUndoable{
 	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		ShapeGroup group = new ShapeGroup(shapeList.getSelectedList());
+		ArrayList<IShape> tempList = new ArrayList<IShape>();
+		tempList.addAll(shapeList.getSelectedList());
+		groupedShape = new ShapeGroup(tempList);
+		//IShape group = new ShapeGroup(tempList);
 		for (IShape shape : shapeList.getSelectedList()) {
-			//group.add(shape);
 			shapeList.remove(shape);
 		}
-		shapeList.add(group);
+		shapeList.add(groupedShape);
+		shapeList.clearSelectedList();
+		shapeList.addSelected(groupedShape);
+		CommandHistory.add(this);
 	}
 	
 	@Override
 	public void undo() {
 		// TODO Auto-generated method stub
-		
+		shapeList.remove(groupedShape);
+		shapeList.clearSelectedList();
+		for(IShape shape: groupedShape.getShapes())
+		{
+			shapeList.add(shape);
+			shapeList.addSelected(shape);
+		}
 	}
 
 	@Override
 	public void redo() {
-		// TODO Auto-generated method stub
-		
+		for (IShape shape : shapeList.getSelectedList()) {
+			shapeList.remove(shape);
+		}
+		shapeList.add(groupedShape);
+		shapeList.clearSelectedList();
+		shapeList.addSelected(groupedShape);
 	}
 
 	

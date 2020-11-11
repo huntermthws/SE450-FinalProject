@@ -9,6 +9,7 @@ import commands.CreateShapeCommand;
 import commands.ICommand;
 import commands.MoveShapeCommand;
 import commands.SelectShapeCommand;
+import model.MouseMode;
 import model.ShapeList;
 import model.persistence.ApplicationState;
 import view.interfaces.PaintCanvasBase;
@@ -46,15 +47,17 @@ public class MouseListener extends MouseAdapter {
 		{
 			endPoint = new Point (e.getX(), e.getY());
 			ICommand shapeCommand = null;
-			if(appState.getActiveMouseMode().toString() == "DRAW")
+			if(appState.getActiveMouseMode() == MouseMode.DRAW)
 			{
 				//System.out.println("Creating..");
+				//shapeList.clearSelectedList();
 				shapeCommand = new CreateShapeCommand(startPoint, endPoint, shapeList, appState);
 				shapeCommand.run();
 			}
-			else if(appState.getActiveMouseMode().toString() == "SELECT")
+			else if(appState.getActiveMouseMode()== MouseMode.SELECT)
 			{
 				//System.out.println("Selecting..");
+				shapeList.clearSelectedList();
 				shapeCommand = new SelectShapeCommand(startPoint, endPoint, shapeList);
 				shapeCommand.run();
 			}

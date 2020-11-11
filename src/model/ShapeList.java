@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import commands.CreateShapeCommand;
 import commands.DrawShapeCommand;
 import commands.ICommand;
+import commands.IDrawShapeCommand;
 import commands.OutlineShapeCommand;
 import view.interfaces.PaintCanvasBase;
 import model.interfaces.IShape;
@@ -27,8 +28,8 @@ public class ShapeList {
 	//Calls DrawShape
 	public void add(IShape Shape) {
 		masterShapeList.add(Shape);
-		ICommand shapeCommand = null;
-		shapeCommand = new DrawShapeCommand(/*Shape.getStart(), Shape.getEnd(),*/ this, paintCanvas);
+		IDrawShapeCommand shapeCommand = null;
+		shapeCommand = new DrawShapeCommand(this, paintCanvas);
 		shapeCommand.run();
 	}
 	
@@ -36,8 +37,8 @@ public class ShapeList {
 	//Calls DrawShape
 	public void remove(IShape Shape) {
 		masterShapeList.remove(Shape);
-		ICommand shapeCommand = null;
-		shapeCommand = new DrawShapeCommand(/*Shape.getStart(), Shape.getEnd(),*/ this, paintCanvas);
+		IDrawShapeCommand shapeCommand = null;
+		shapeCommand = new DrawShapeCommand(this, paintCanvas);
 		shapeCommand.run();
 		
 	}
@@ -46,20 +47,38 @@ public class ShapeList {
 	//Calls DrawShape so that the selected box will appear
 	public void addSelected(IShape Shape) {
 		selectedShapeList.add(Shape);
-		ICommand shapeCommand = null;
-		shapeCommand = new DrawShapeCommand(/*Shape.getStart(), Shape.getEnd(),*/ this, paintCanvas);
+		IDrawShapeCommand shapeCommand = null;
+		shapeCommand = new DrawShapeCommand(this, paintCanvas);
 		shapeCommand.run();
+	}
+	public void removeSelected(IShape Shape) {
+		selectedShapeList.remove(Shape);
+		IDrawShapeCommand shapeCommand = null;
+		shapeCommand = new DrawShapeCommand(this, paintCanvas);
+		shapeCommand.run();
+		
 	}
 	
 	//Empties the selectedList
 	public void clearSelectedList() {
         selectedShapeList.clear();
+        IDrawShapeCommand shapeCommand = null;
+		shapeCommand = new DrawShapeCommand(this, paintCanvas);
+		shapeCommand.run();
     }
 	
 	
 	//add the shape to the copied shape list
 	public void addCopied(IShape Shape) {
 			copiedShapeList.add(Shape);
+	}
+	
+	public void addGroup(ArrayList<IShape> groupedShapes)
+	{
+		for(IShape shape : groupedShapes)
+		{
+			this.addSelected(shape);
+		}
 	}
 	
 	public ArrayList<IShape> getList() {return masterShapeList;}

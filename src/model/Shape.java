@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import controller.ColorConvertor;
 import model.interfaces.IShape;
@@ -44,6 +45,11 @@ public class Shape implements IShape {
 		yPoints[2] = endPoint.y;
 	}
 	
+	/*public Shape(IBuilder ShapeBuilder)
+	{
+		this.startPoint = ShapeBuilder.getStartPoint();
+	}*/
+	
 	
 	//Logic to check for collision...messy....
 	public boolean checkCollision(Point selectedStart, Point selectedEnd) {	
@@ -68,6 +74,8 @@ public class Shape implements IShape {
         }
     }
 	
+	
+	
 	//Logic to change the coordinate of the shape
 	//MESSY
 	public void moveCoodinates(int x, int y) {
@@ -83,8 +91,8 @@ public class Shape implements IShape {
 		this.minY = Math.min(startPoint.getY(), endPoint.getY());
 		this.maxY = Math.max(startPoint.getY(), endPoint.getY());
         
-		this.width = maxX - minX;
-		this.height = maxY - minY;
+		//this.width = maxX - minX;
+		//this.height = maxY - minY;
 		this.xPoints[0] = startPoint.x;
 		this.xPoints[1] = endPoint.x;
 		this.xPoints[2] = startPoint.x;
@@ -107,8 +115,8 @@ public class Shape implements IShape {
 		this.minY = Math.min(startPoint.getY(), endPoint.getY());
 		this.maxY = Math.max(startPoint.getY(), endPoint.getY());
         
-		this.width = maxX - minX;
-		this.height = maxY - minY;
+		//this.width = maxX - minX;
+		//this.height = maxY - minY;
 		this.xPoints[0] = startPoint.x;
 		this.xPoints[1] = endPoint.x;
 		this.xPoints[2] = startPoint.x;
@@ -132,4 +140,20 @@ public class Shape implements IShape {
 	public int getWidth() {return width;}
 	public ShapeType getShape() {return activeType;}
 	public ShapeShadingType getShading() {return shadingType;}
+
+
+	@Override
+	public ArrayList<IShape> getShapes() {
+		// TODO Auto-generated method stub
+		ArrayList<IShape> thisArray = new ArrayList<IShape>();
+		thisArray.add(this);
+		return thisArray;
+	}
+
+
+	@Override
+	public boolean isGroup() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

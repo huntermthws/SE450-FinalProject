@@ -5,33 +5,29 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import model.Shape;
 import model.ShapeList;
+import model.ShapeType;
 import model.interfaces.IShape;
 import strategy.*;
 import mouseListener.Point;
 import view.interfaces.PaintCanvasBase;
 
-public class DrawShapeCommand implements ICommand {
+public class DrawShapeCommand implements IDrawShapeCommand {
 	
 	PaintCanvasBase paintCanvas;
-	/*Point startPoint;
-	Point endPoint;
-	/*ArrayList<IShape>*/ ShapeList shapeList;
-	private IShape newShape;
-	Point triangePoint;
-	int [] xPoints = new int[3];
-	int [] yPoints = new int[3];
+	ShapeList shapeList;
 	private IStrategy shapeStrategy;
+
 	
 	
 	//Should pass shape instead...
 	//All these arguments are no good, but works for now..
-	public DrawShapeCommand(/*Point startPoint, Point endPoint,  ArrayList<IShape>*/ShapeList shapeList, PaintCanvasBase paintCanvas)
+	public DrawShapeCommand(ShapeList shapeList, PaintCanvasBase paintCanvas)
 	{
-		/*this.startPoint = startPoint;
-		this.endPoint = endPoint;*/
 		this.shapeList = shapeList;
 		this.paintCanvas = paintCanvas;
 	}
+	
+	
 
 	//Create graphic
 	//Wipe canvas
@@ -44,54 +40,77 @@ public class DrawShapeCommand implements ICommand {
 		graphics2d.setColor(Color.WHITE);
 		graphics2d.fillRect(0, 0, 9000, 9000);
 		
+		
 		for(IShape shape : shapeList.getList())
+		//for(IShape shape : drawShapeList)
 		{
-			IStrategy shapeStrategy = null;
-			if(shape.getShape().toString() == "RECTANGLE")
-			{
-				if(shapeList.getSelectedList().contains(shape))
-				{
-					//System.out.println("Contains");
-					shapeStrategy = new RectangleDecorator();
-					shapeStrategy.draw(shape, graphics2d);
-				}
-				else
-				{
-					shapeStrategy = new RectangleStrategy();
-					shapeStrategy.draw(shape, graphics2d);
-				}
-			}
-			else if(shape.getShape().toString() == "ELLIPSE")
-			{
-				if(shapeList.getSelectedList().contains(shape))
-				{
-					//System.out.println("Contains");
-					shapeStrategy = new EllipseDecorator();
-					shapeStrategy.draw(shape, graphics2d);
-				}
-				else
-				{
-					shapeStrategy = new EllipseStrategy();
-					shapeStrategy.draw(shape, graphics2d);
-				}
-			}
-			else if(shape.getShape().toString() == "TRIANGLE")
-			{
-				if(shapeList.getSelectedList().contains(shape))
-				{
-					//System.out.println("Contains");
-					shapeStrategy = new TriangleDecorator();
-					shapeStrategy.draw(shape, graphics2d);
-				}
-				else
-				{
-					shapeStrategy = new TriangleStrategy();
-					shapeStrategy.draw(shape, graphics2d);
-				}
-			}
-				
+			draw(shape, graphics2d);
 		} 
 		
+	}
+
+
+
+	@Override
+	public void draw(IShape shape, Graphics2D graphics2d) {
+		// TODO Auto-generated method stub
+		IStrategy shapeStrategy = null;
+		if(shape.isGroup())
+		{
+			if(shapeList.getSelectedList().contains(shape))
+			{
+				//System.out.println("Contains");
+				shapeStrategy = new RectangleDecorator();
+				shapeStrategy.draw(shape, graphics2d);
+			}
+			for (IShape s : shape.getShapes()) 
+			{
+				System.out.println("Group print");
+				draw(s, graphics2d);
+			}
+		}
+		else if(shape.getShape() == ShapeType.RECTANGLE)
+		{
+			if(shapeList.getSelectedList().contains(shape))
+			{
+				//System.out.println("Contains");
+				shapeStrategy = new RectangleDecorator();
+				shapeStrategy.draw(shape, graphics2d);
+			}
+			else
+			{
+				shapeStrategy = new RectangleStrategy();
+				shapeStrategy.draw(shape, graphics2d);
+			}
+		}
+		else if(shape.getShape() == ShapeType.ELLIPSE)
+		{
+			if(shapeList.getSelectedList().contains(shape))
+			{
+				//System.out.println("Contains");
+				shapeStrategy = new EllipseDecorator();
+				shapeStrategy.draw(shape, graphics2d);
+			}
+			else
+			{
+				shapeStrategy = new EllipseStrategy();
+				shapeStrategy.draw(shape, graphics2d);
+			}
+		}
+		else if(shape.getShape() == ShapeType.TRIANGLE)
+		{
+			if(shapeList.getSelectedList().contains(shape))
+			{
+				//System.out.println("Contains");
+				shapeStrategy = new TriangleDecorator();
+				shapeStrategy.draw(shape, graphics2d);
+			}
+			else
+			{
+				shapeStrategy = new TriangleStrategy();
+				shapeStrategy.draw(shape, graphics2d);
+			}
+		}
 	}
 	
 }
