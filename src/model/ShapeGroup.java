@@ -11,6 +11,10 @@ public class ShapeGroup implements IShape{
 	public ArrayList<IShape> groupedShapes;
 	public int maxX, minX = -1, minY = -1, maxY, width, height;
 	
+	public ShapeGroup()
+	{
+		this.groupedShapes = new ArrayList<IShape>();
+	}
 	public ShapeGroup(ArrayList<IShape> selectedShapes)
 	{
 		this.groupedShapes = selectedShapes;
